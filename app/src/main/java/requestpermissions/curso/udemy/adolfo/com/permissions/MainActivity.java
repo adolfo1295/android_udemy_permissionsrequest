@@ -22,9 +22,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //askPermissionsWithLibrary();
+        askPermissionsWithLibrary();
         //askPermissionsNormally();
-        checkMorePermissions();
+        //checkMorePermissions();
     }
 
 
@@ -41,12 +41,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkMorePermissions(){
 
-        // Here, thisActivity is the current activity
+        // otra manera para solicitar los permisos es de esta forma
+        //donde con ContextCompat.checlSelfPermissions te pdie estos parametros
+        //(context, permiso)
+        //cabe destacar que se puede colcoar mas de un permiso, como en esta¿e caso, colocamos 2, camara y contactos
         if (ContextCompat.checkSelfPermission(this,Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
-
+            //al verificar que no estan otorgados los permisos se crea un requestPermission
+            //que es el que lanzara los dialogs para que confirmes los permisos, o se deniegen
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_CONTACTS,Manifest.permission.CAMERA},1);
         }
@@ -60,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         new AskPermission.Builder(this)
                 //aqui van los permisos que se quieren solciitar
                 //cabe destacar que deben agregarse primero en manifest.xml
-                .setPermissions(Manifest.permission.CAMERA)
+                .setPermissions(Manifest.permission.SEND_SMS, Manifest.permission.ACCESS_FINE_LOCATION)
                 //aqui se crea el callback para revisar el resultado de los permisos
                 //si fueron otorgados o denegados
                 .setCallback(new PermissionCallback() {
